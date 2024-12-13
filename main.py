@@ -42,21 +42,28 @@ class App:
 
             # Window with standard translator
             # with dpg.child_window(label='Translator', pos=(0,10), width=640, height=400):
-            dpg.add_text("Translator")
-            with dpg.table(header_row=False) as table:
-                dpg.add_table_column(label="Original Language")
-                dpg.add_table_column(label="Translate Language")
-                with dpg.table_row():
-                    for i in range(2):
-                        dpg.add_combo(default_value="English", items=self.lang_select, callback=lambda x,y: print(self.languages[y]))
-                with dpg.table_row():
-                    for i in range(2):
-                        dpg.add_input_text(multiline=True, tab_input=True, height=300, width=300)
+            with dpg.tab_bar():
+                with dpg.tab(label="Translator"):
+                    translator = TranslatorBase()
+                    translator.choose_tab()
 
         dpg.show_viewport()
         dpg.set_primary_window('Main', True)
         dpg.start_dearpygui()
         dpg.destroy_context()
+
+class TranslatorBase(App):
+    def choose_tab(self) -> None:
+        with dpg.table(header_row=False) as table:
+            dpg.add_table_column(label="Original Language")
+            dpg.add_table_column(label="Translate Language")
+            with dpg.table_row():
+                for i in range(2):
+                    dpg.add_combo(default_value="English", items=self.lang_select,
+                                  callback=lambda x, y: print(self.languages[y]))
+            with dpg.table_row():
+                for i in range(2):
+                    dpg.add_input_text(multiline=True, tab_input=True, height=300, width=300)
 
 if __name__ == "__main__":
     app = App()
