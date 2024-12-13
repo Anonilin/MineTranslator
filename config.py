@@ -1,0 +1,1 @@
+CFG = open('config.json', 'rb')

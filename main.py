@@ -1,7 +1,9 @@
 import json
-
 import dearpygui.dearpygui as dpg  #Import UI library
+from translators.googletrans.gtrans import Gtranslator
 from translator_selecter import *
+import threading
+
 
 class App:
     def __init__(self):
@@ -9,8 +11,10 @@ class App:
         self.original_language = "English"
         self.translate_language = "Russian"
 
+        self.use_translator = ''
+
         # Languages and their codes
-        language_file = open('languages.json', 'rb')
+        language_file = open('./languages/languages.json', 'rb')
         self.languages = json.load(language_file)
         self.lang_select = [x for x in self.languages.keys()]
 
@@ -23,6 +27,9 @@ class App:
             print("ERROR!")
         elif(check_translator(data) == 1):
             print('USE!')
+
+            if(data == "Google"): self.use_translator = Gtranslator()
+
         elif(check_translator(data) == 2):
             print("API!")
 
@@ -41,9 +48,8 @@ class App:
                     dpg.add_combo(label="Select Translator", items=("Google", "Yandex", "DeepL"), callback=self.select_translator)
 
             # Window with standard translator
-            # with dpg.child_window(label='Translator', pos=(0,10), width=640, height=400):
             with dpg.tab_bar():
-                with dpg.tab(label="Translator"):
+                with dpg.tab(label="Translate"):
                     translator = TranslatorBase()
                     translator.choose_tab()
 
@@ -51,6 +57,7 @@ class App:
         dpg.set_primary_window('Main', True)
         dpg.start_dearpygui()
         dpg.destroy_context()
+
 
 class TranslatorBase(App):
     def choose_tab(self) -> None:
@@ -64,7 +71,10 @@ class TranslatorBase(App):
             with dpg.table_row():
                 for i in range(2):
                     dpg.add_input_text(multiline=True, tab_input=True, height=300, width=300)
+                    
 
 if __name__ == "__main__":
     app = App()
-    app.run()
+    mainWindow = threading.Thread(target=app.run)
+    mainWindow.start()
+    mainWindow.join()

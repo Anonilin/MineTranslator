@@ -1,7 +1,7 @@
+from config import *
 import json
 
-file = open('translator_list.json', 'r', encoding='utf-8').read()
-file = json.loads(file)
+file = json.load(CFG)['translator_list']
 
 def check_translator(translator_title:str) -> int:
     """Codes:
