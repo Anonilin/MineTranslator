@@ -1,8 +1,6 @@
 import json
-from cProfile import label
 
 import dearpygui.dearpygui as dpg  #Import UI library
-from dearpygui.dearpygui import mvKey_Return
 
 from translators.gtrans import GTranslator
 from translator_selecter import *
