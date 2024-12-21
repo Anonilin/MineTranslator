@@ -4,12 +4,15 @@ class GTranslator:
     def __init__(self):
         self.translator = googletrans.Translator()
         self.translation = ''
-        print('GTRANS init')
+
     def translate(self, base, dest, data) -> str:
-        print(base,dest,data)
         translation = self.translator.translate(src=base, dest=dest, text=data)
         translation = translation.text
         return translation
+
+    def define_language(self, text) -> str:
+        detect_language = self.translator.detect(text=text).lang
+        return  detect_language
 
     @property
     def get_translation(self) -> str:
