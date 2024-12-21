@@ -1,0 +1,4 @@
+{
+  "translator_list": "./translators/translator_list.json",
+  "languages_list": "./languages/languages.json"
+}
